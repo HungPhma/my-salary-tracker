@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/my-salary-tracker/static/css/main.4180fc10.css",
-    "main.js": "/my-salary-tracker/static/js/main.a1552f78.js",
+    "main.css": "/my-salary-tracker/static/css/main.e1b39461.css",
+    "main.js": "/my-salary-tracker/static/js/main.70754dfb.js",
     "static/js/453.45961105.chunk.js": "/my-salary-tracker/static/js/453.45961105.chunk.js",
     "static/media/budget.gif": "/my-salary-tracker/static/media/budget.d00e27dfb554d946e4fa.gif",
     "index.html": "/my-salary-tracker/index.html",
-    "main.4180fc10.css.map": "/my-salary-tracker/static/css/main.4180fc10.css.map",
-    "main.a1552f78.js.map": "/my-salary-tracker/static/js/main.a1552f78.js.map",
+    "main.e1b39461.css.map": "/my-salary-tracker/static/css/main.e1b39461.css.map",
+    "main.70754dfb.js.map": "/my-salary-tracker/static/js/main.70754dfb.js.map",
     "453.45961105.chunk.js.map": "/my-salary-tracker/static/js/453.45961105.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.4180fc10.css",
-    "static/js/main.a1552f78.js"
+    "static/css/main.e1b39461.css",
+    "static/js/main.70754dfb.js"
   ]
 }
