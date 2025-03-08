@@ -1,9 +1,15 @@
-import React from "react";
+import React, {useState}from "react";
 import '../App.css';
 import logo from '../assests/budget.gif';
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleMenu = () =>{
+        setIsOpen(!isOpen);
+    }
+
     return (
         <nav className="navbar">
             <div className="navbar-logo">
@@ -11,12 +17,16 @@ const Navbar = () => {
                     <img src={logo} alt="logo of my salary tracker" />
                 </Link>
             </div>
-            <div>
-                <ul className="nav-links">
-                    <li><Link to={"/home"}>Home</Link></li>
-                    <li><Link to={"/history"}>History</Link></li>
-                    <li><Link to={"/salary"}>Salary</Link></li>
+            <div className="nav-div">
+                <ul className={`nav-links ${isOpen ? "open" : ""}`}>
+                    <li><Link to={"/home"} onClick={() => setIsOpen(false)}>Home</Link></li>
+                    <li><Link to={"/history"} onClick={() => setIsOpen(false)}>History</Link></li>
+                    <li><Link to={"/salary"} onClick={() => setIsOpen(false)}>Salary</Link></li>
                 </ul>
+            </div>
+
+            <div className="hamburger-button" onClick={toggleMenu}>
+                &#x2630;
             </div>
         </nav>
     );
