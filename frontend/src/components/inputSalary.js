@@ -1,9 +1,10 @@
 import React from "react";
+import "../App.css";
+
 
 const InputSalary = () => {
     return (
-        <div>
-            <h1>HI</h1>
+        <div >
         </div>
     );
 };
