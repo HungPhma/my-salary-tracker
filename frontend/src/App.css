@@ -114,6 +114,27 @@
 
 .profile-photo{
   scale: 1;
+  position: relative;
+  display: inline-block;
+}
+.edit-profile{
+  position: absolute;
+  top: 65px;
+  left: 60px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 50%;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  box-shadow: 0 4px 8px rgb(0,0,0,2);
+}
+.edit-profile:hover{
+  background-color: #0056b3;
 }
 .straight-line{
   width: 100%;
@@ -133,9 +154,41 @@
   flex: 2;
   display: flex;
   flex-direction: column;
+  text-align: center;
+  padding: 1rem;
 }
 
+.table{
+  width: 100%;
+  margin-top: 10px;
+}
 
+th, td{
+  padding: 15px;
+  text-align: center;
+  border: 1px solid #dddee0;
+}
+th{
+  background-color: #d1d1d1;
+}
+tr:nth-child(even){
+  background-color: #f0efef;
+}
+.edit-button{
+  width: 100%;
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  cursor:pointer;
+  border-radius: 5px;
+}
+.edit-button:hover{
+  background-color: #2d8230;
+}
+.edit-button:focus{
+  outline: none;
+}
 /* statement.js */
 .statement{
   background-color: white;
