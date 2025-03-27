@@ -65,7 +65,7 @@ const SalaryTable = () => {
                 });
 
                 console.log('Response status:', response.status);
-                console.log('Response body:', await response.json());
+                console.log('Response body:', response);
 
                 if(response.ok){
                     const updatedSalary = await response.json();
@@ -95,6 +95,107 @@ const SalaryTable = () => {
             }
         }
     };
+    const handDeleteSalary = async (index) => {
+        const currentIndex = data[index];
+        const {value: confirmDelete} = await Swal.fire({
+            title: 'Are you sure?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Delete',
+            cancelButtonText: 'Cancel'     
+        });
+
+        if(confirmDelete){
+            const id = currentIndex._id;
+            try {
+                const response = await fetch(`http://localhost:8000/api/salary/delete/${id}`, {
+                    method: 'DELETE',
+                    headers:{
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if(response.ok){
+                    Swal.fire(
+                        'Deleted!',
+                        'The salary has been deleted.',
+                        'success'
+                    );
+
+                    const updatedData = data.filter((item, i) => i !== index);
+                    setData(updatedData);
+                }
+                else{
+                    Swal.fire(
+                        'Error!',
+                        'Failed to delete the salary.',
+                        'error'
+                    );
+                }
+            }
+            catch (error) {
+                console.error('Error deleting:', error);
+                Swal.fire('Error', 'Failed to connect to server.', 'error');
+            }
+        }
+    };
+    const handAddSalary = async () => {
+        const { value: formValues } = await Swal.fire({
+            title: 'Add Salary and Tip',
+            html: `
+                <label>Salary:</label>
+                <input type='number' id='salary' />
+                <label>Tip:</label>
+                <input type='number' id='tip' />
+                <label>Date:</label>
+                <input type='date' id='date' />
+            `,
+            showCancelButton: true,
+            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Add',
+            preConfirm: () => {
+                const newsalary = parseFloat(document.getElementById('salary').value);
+                const newtip = parseFloat(document.getElementById('tip').value);
+                const newdate = document.getElementById('date').value;
+    
+                if (isNaN(newsalary) || isNaN(newtip)) {
+                    Swal.showValidationMessage('Please enter a valid number');
+                    return false;
+                }
+                return { newsalary, newtip, newdate };
+            }
+        });
+    
+        if (formValues) {
+            const { newsalary, newtip, newdate } = formValues;
+            try {
+                const response = await fetch('http://localhost:8000/api/salary/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        date: newdate,
+                        salary: newsalary,
+                        tip: newtip
+                    })
+                });
+    
+                if (response.ok) {
+                    const newSalaryData = await response.json();
+                    // Add new data to the existing state
+                    setData((prevData) => [...prevData, newSalaryData]);
+    
+                    Swal.fire('Added!', 'The salary has been added.', 'success');
+                } else {
+                    Swal.fire('Error!', 'Failed to add the salary.', 'error');
+                }
+            } catch (error) {
+                console.error('Error adding:', error);
+                Swal.fire('Error', 'Failed to connect to server.', 'error');
+            }
+        }
+    };
     return (
         <div className='salaryTable'>
             <table className='table'>
@@ -115,13 +216,19 @@ const SalaryTable = () => {
                             <td>{item.salary}</td>
                             <td>{item.tip}</td>
                             <td>{item.total}</td>
-                            <td>
-                                <button className="edit-button" onClick={() => handEditSalary(index)}>Edit</button>
+                            <td className='edit'>
+                                <div className='edit-delete-buttons'>
+                                    <button className="edit-button" onClick={() => handEditSalary(index)}>Edit</button>
+                                    <button className='delete-button' onClick={() => handDeleteSalary(index)}>Delete</button>
+                                </div>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            <div className='add-salary'>
+                <button className='add-button' onClick={handAddSalary}>Add</button>
+            </div>
         </div>
     );
 };

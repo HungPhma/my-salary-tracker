@@ -149,7 +149,6 @@
 /* SalaryTable.js */
 .salaryTable{
   background-color: white;
-  height: 600px;
   border-radius: 10px;
   flex: 2;
   display: flex;
@@ -164,7 +163,7 @@
 }
 
 th, td{
-  padding: 15px;
+  padding: 10px;
   text-align: center;
   border: 1px solid #dddee0;
 }
@@ -174,8 +173,15 @@ th{
 tr:nth-child(even){
   background-color: #f0efef;
 }
+.edit{
+  width: 50px;
+}
+.edit-delete-buttons{
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
 .edit-button{
-  width: 100%;
   background-color: #4CAF50;
   border: none;
   color: white;
@@ -183,8 +189,37 @@ tr:nth-child(even){
   cursor:pointer;
   border-radius: 5px;
 }
+.delete-button{
+  background-color: red;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.add-button{
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+.add-button:hover{
+  background-color: #0056b3;
+}
+.add-button:focus{
+  outline: none;
+}
 .edit-button:hover{
   background-color: #2d8230;
+}
+.delete-button:hover{
+  background-color: #c62828;
+}
+.delete-button:focus{
+  outline: none;
 }
 .edit-button:focus{
   outline: none;
