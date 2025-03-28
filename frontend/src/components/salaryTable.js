@@ -3,6 +3,8 @@ import Swal from 'sweetalert2';
 
 const SalaryTable = () => {
     const [data, setData] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
+    const [selectedMonth, setSelectedMonth] = useState('all');
     useEffect(() => {
         const fetchDate =  async () => {
             try{
@@ -10,6 +12,7 @@ const SalaryTable = () => {
                 const data = await response.json();
                 console.log('Fetched data: ', data);
                 setData(data);
+                setFilteredData(data); 
             }
             catch(err){
                 console.log('Error fetching data: ', err);
@@ -18,6 +21,21 @@ const SalaryTable = () => {
 
         fetchDate();
     }, []);
+
+    const handleFilter = (event) => {
+        const month = event.target.value;
+        setSelectedMonth(month);
+
+        if (month === 'all') {
+            setFilteredData(data);
+        } else {
+            const filtered = data.filter((item) => {
+                const itemMonth = new Date(item.date).toLocaleString('en-US', { month: 'long' }).toLowerCase();
+                return itemMonth === month;
+            });
+            setFilteredData(filtered);
+        }
+    };
 
     const handEditSalary = async (index) => {
         const currentIndex = data[index];
@@ -207,19 +225,23 @@ const SalaryTable = () => {
                         <th>Tip</th>
                         <th>Total</th>
                         <th>
-                            <select>
-                                {/* <option value="all">All</option>
+                            <select onChange={handleFilter} value={selectedMonth}>
+                                <option value="all">All</option>
                                 {Array.from({ length: 12 }, (_, index) => {
-                                const month = new Date(0, index).toLocaleString('en-US', { month: 'long' });
-                                return <option key={index} value={month.toLowerCase()}>{month}</option>;
-                                })} */}
+                                    const month = new Date(0, index).toLocaleString('en-US', { month: 'long' });
+                                    return (
+                                        <option key={index} value={month.toLowerCase()}>
+                                            {month}
+                                        </option>
+                                    );
+                                })}
                             </select>
                         </th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    {data.map((item, index) => (
+                    {filteredData.map((item, index) => (
                         <tr key={item._id}>
                             <td>{item.date}</td>
                             <td>${item.salary}</td>

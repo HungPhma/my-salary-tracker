@@ -241,3 +241,8 @@ tr:nth-child(even){
   display: flex;
   flex-direction: column;
 }
+
+option{
+  border-radius: 10px;
+  text-align: center;
+}

@@ -53,13 +53,13 @@ const Profile = () => {
                 <button className="edit-profile" onClick={() => document.getElementById('input-file').click()}>+</button>
             </div>
             <div className="profile-name">
-                <h3>Hello, Trinh Phan!</h3>
+                <h1>Hello, Trinh!</h1>
             </div>
             <hr className="straight-line"/>
+            <h2>Total Income</h2>
             <div className="profile-total-income">
                 <p>${totalIncome}</p>
             </div>
-            <h3>Total Income</h3>
         </div>
     );
 };
