@@ -74,12 +74,12 @@ const SalaryTable = () => {
                     newData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
                     setData(newData);
-
                     Swal.fire(
                         'Updated!',
                         'The salary has been updated.',
                         'success'
                     );
+                    window.location.reload();
                 }
                 else{
                     Swal.fire(
@@ -124,6 +124,7 @@ const SalaryTable = () => {
 
                     const updatedData = data.filter((item, i) => i !== index);
                     setData(updatedData);
+                    window.location.reload();
                 }
                 else{
                     Swal.fire(
@@ -185,8 +186,8 @@ const SalaryTable = () => {
                     const newSalaryData = await response.json();
                     // Add new data to the existing state
                     setData((prevData) => [...prevData, newSalaryData]);
-    
                     Swal.fire('Added!', 'The salary has been added.', 'success');
+                    window.location.reload();
                 } else {
                     Swal.fire('Error!', 'Failed to add the salary.', 'error');
                 }
@@ -205,7 +206,15 @@ const SalaryTable = () => {
                         <th>Salary</th>
                         <th>Tip</th>
                         <th>Total</th>
-                        <th>Edit</th>
+                        <th>
+                            <select>
+                                {/* <option value="all">All</option>
+                                {Array.from({ length: 12 }, (_, index) => {
+                                const month = new Date(0, index).toLocaleString('en-US', { month: 'long' });
+                                return <option key={index} value={month.toLowerCase()}>{month}</option>;
+                                })} */}
+                            </select>
+                        </th>
                     </tr>
                 </thead>
 
@@ -213,9 +222,9 @@ const SalaryTable = () => {
                     {data.map((item, index) => (
                         <tr key={item._id}>
                             <td>{item.date}</td>
-                            <td>{item.salary}</td>
-                            <td>{item.tip}</td>
-                            <td>{item.total}</td>
+                            <td>${item.salary}</td>
+                            <td>${item.tip}</td>
+                            <td>${item.total}</td>
                             <td className='edit'>
                                 <div className='edit-delete-buttons'>
                                     <button className="edit-button" onClick={() => handEditSalary(index)}>Edit</button>

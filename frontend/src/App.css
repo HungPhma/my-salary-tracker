@@ -155,45 +155,52 @@
   flex-direction: column;
   text-align: center;
   padding: 1rem;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .table{
   width: 100%;
   margin-top: 10px;
+  border-collapse: collapse;
+  table-layout: auto;
 }
 
 th, td{
+  width: fit-content;
   padding: 10px;
   text-align: center;
-  border: 1px solid #dddee0;
+  border: 2px solid #dddee0;
+  /* word-wrap: break-word; */
 }
 th{
   background-color: #d1d1d1;
 }
 tr:nth-child(even){
-  background-color: #f0efef;
+  background-color: #e5e3e3e2;
 }
-.edit{
-  width: 50px;
-}
+
 .edit-delete-buttons{
   display: flex;
-  gap: 10px;
+  gap: 5px;
   justify-content: center;
 }
 .edit-button{
+  width: auto;
   background-color: #4CAF50;
   border: none;
   color: white;
-  padding: 10px 20px;
+  padding: 5px 12px;
   cursor:pointer;
   border-radius: 5px;
 }
 .delete-button{
+  width: auto;
   background-color: red;
   border: none;
   color: white;
-  padding: 10px 20px;
+  padding: 5px 12px;
   cursor: pointer;
   border-radius: 5px;
 }

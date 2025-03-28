@@ -1,10 +1,32 @@
-import React, {useState}from "react";
+import React, { useState, useEffect}from "react";
 import "../App.css";
 import defaultProfile from "../assests/profile-icon.png";
 
-
 const Profile = () => {
     const [profileImg, setProfileImg] = useState(defaultProfile);
+    const [totalIncome, setTotalIncome] = useState(0);
+
+    useEffect(() => {
+        const fetchIncome = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/api/income');
+                if(!response.ok){
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                if(data.totalIncome !== undefined){
+                    setTotalIncome(data.totalIncome);
+                }
+                else{
+                    console.error('Unexpected response format:', data);
+                }
+            }
+            catch(error) {
+                console.error('Error fetching income data:', error);
+            }
+        }
+        fetchIncome();
+    }, []);
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -16,6 +38,7 @@ const Profile = () => {
             reader.readAsDataURL(file);
         }
     };
+
     return (
         <div className="profile">
             <div className="profile-photo">
@@ -34,7 +57,7 @@ const Profile = () => {
             </div>
             <hr className="straight-line"/>
             <div className="profile-total-income">
-                <p>$1000</p>
+                <p>${totalIncome}</p>
             </div>
             <h3>Total Income</h3>
         </div>
