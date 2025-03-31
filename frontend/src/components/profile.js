@@ -11,6 +11,7 @@ const Profile = () => {
             try {
                 // const url = process.env.REACT_APP_API_INCOME;
                 const response = await fetch(`https://my-salary-tracker.onrender.com/api/income`);
+                console.log('Response:', response); // Log the response for debugging
                 if(!response.ok){
                     throw new Error('Network response was not ok');
                 }
