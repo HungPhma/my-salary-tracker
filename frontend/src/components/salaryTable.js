@@ -45,12 +45,20 @@ const SalaryTable = () => {
         const { value: formValues } = await Swal.fire({
             title: 'Edit Salary and Tip',
             html:
-                `<label>Salary:</label>
-                <input type='number' id='salary' value='${currentIndex.salary}' />
-                <label>Tip:</label>
-                <input type='number' id='tip' value='${currentIndex.tip}' />
-                <label>Date:</label>
-                <input type='date' id='date' value='${currentIndex.date}' />`,
+                `<div class="form-group">
+                    <label htmlFor="salary">Salary:</label>
+                    <input type="number" id="salary" value="${currentIndex.salary}" />
+                </div>
+
+                <div class="form-group">
+                    <label htmlFor="tip">Tip:</label>
+                    <input type="number" id="tip" value="${currentIndex.tip}" />
+                </div>
+
+                <div class="form-group">
+                    <label htmlFor="date">Date:</label>
+                    <input type="date" id="date" value="${currentIndex.date}" />
+                </div>`,
             showCancelButton: true,
             cancelButtonText: 'Cancel',
             confirmButtonText: 'Save',
@@ -167,12 +175,20 @@ const SalaryTable = () => {
         const { value: formValues } = await Swal.fire({
             title: 'Add Salary and Tip',
             html: `
-                <label>Salary:</label>
-                <input type='number' id='salary' />
-                <label>Tip:</label>
-                <input type='number' id='tip' />
-                <label>Date:</label>
-                <input type='date' id='date' />
+                <div class="form-group">
+                    <label htmlFor="salary">Salary:</label>
+                    <input type="number" id="salary" />
+                </div>
+
+                <div class="form-group">
+                    <label htmlFor="tip">Tip:</label>
+                    <input type="number" id="tip" />
+                </div>
+
+                <div class="form-group">
+                    <label htmlFor="date">Date:</label>
+                    <input type="date" id="date" />
+                </div>
             `,
             showCancelButton: true,
             cancelButtonText: 'Cancel',
