@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 dotenv.config(); 
 const url = process.env.MONGO_URI;
  
-mongoose.connect(uri)
+mongoose.connect(url)
     .then(() => {
         console.log('MongoDB connected');
         console.log('Current DB Name:', mongoose.connection.name);
