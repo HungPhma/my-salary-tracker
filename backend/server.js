@@ -7,10 +7,24 @@ import dotenv from 'dotenv';
 const app = express();
 const port = 8000;
 
+const allowedOrigins = [
+    'http://localhost:3000', // Allow local development
+    'https://hungphma.github.io', // Allow deployed frontend
+  ];
+  
 app.use(cors({
-    origin:'https://hungphma.github.io/my-salary-tracker/',
+    origin: (origin, callback) => {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        // Allow requests without origin (e.g., Postman or server-side requests)
+        callback(null, true);
+        } else {
+        callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+  
 app.use(express.json());
 
 app.get('/', (req, res) => {
