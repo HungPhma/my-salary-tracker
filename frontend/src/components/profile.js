@@ -9,7 +9,8 @@ const Profile = () => {
     useEffect(() => {
         const fetchIncome = async () => {
             try {
-                const response = await fetch('http://localhost:8000/api/income');
+                const url = process.env.REACT_APP_API_INCOME;
+                const response = await fetch(url);
                 if(!response.ok){
                     throw new Error('Network response was not ok');
                 }
@@ -53,7 +54,7 @@ const Profile = () => {
                 <button className="edit-profile" onClick={() => document.getElementById('input-file').click()}>+</button>
             </div>
             <div className="profile-name">
-                <h1>Hello, Trinh!</h1>
+                <div>Hello, Trinh!</ div>
             </div>
             <hr className="straight-line"/>
             <h2>Total Income</h2>

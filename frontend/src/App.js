@@ -17,13 +17,13 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/home" element={<InputSalary />} />
-          <Route path="/salary" element={<SalaryTable />} />
-          <Route path="/history" element={<History />} />
+          {/* <Route path="/salary" element={<SalaryTable />} /> */}
+          {/* <Route path="/history" element={<History />} /> */}
         </Routes>
         <div className="body">
-          <Profiler />
-          <SalaryTable />
-          <Statement />
+            <Profiler className="profiler" />
+            <SalaryTable className="salaryTabler" />
+            <Statement className="statementer" />
         </div>
       </div>
     </Router>

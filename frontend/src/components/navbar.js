@@ -20,8 +20,8 @@ const Navbar = () => {
             <div className="nav-div">
                 <ul className={`nav-links ${isOpen ? "open" : ""}`}>
                     <li><Link to={"/home"} onClick={() => setIsOpen(false)}>Home</Link></li>
-                    <li><Link to={"/history"} onClick={() => setIsOpen(false)}>History</Link></li>
-                    <li><Link to={"/salary"} onClick={() => setIsOpen(false)}>Salary</Link></li>
+                    {/* <li><Link to={"/history"} onClick={() => setIsOpen(false)}>History</Link></li> */}
+                    {/* <li><Link to={"/salary"} onClick={() => setIsOpen(false)}>Salary</Link></li> */}
                 </ul>
             </div>
 

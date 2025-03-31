@@ -8,7 +8,8 @@ const SalaryTable = () => {
     useEffect(() => {
         const fetchDate =  async () => {
             try{
-                const response = await fetch('http://localhost:8000/api/salary');
+                const url = process.env.REACT_APP_API_URL;
+                const response = await fetch(url);
                 const data = await response.json();
                 console.log('Fetched data: ', data);
                 setData(data);
@@ -70,7 +71,8 @@ const SalaryTable = () => {
             const id = currentIndex._id;
             console.log('currently ID:', id);
             try {
-                const response = await fetch(`http://localhost:8000/api/salary/${id}`, {
+                const url = process.env.REACT_APP_API_URL; // Use the environment variable for the API URL
+                const response = await fetch(`${url}/${id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -96,8 +98,9 @@ const SalaryTable = () => {
                         'Updated!',
                         'The salary has been updated.',
                         'success'
-                    );
-                    window.location.reload();
+                    ).then(() => {
+                        window.location.reload();
+                    });
                 }
                 else{
                     Swal.fire(
@@ -126,7 +129,8 @@ const SalaryTable = () => {
         if(confirmDelete){
             const id = currentIndex._id;
             try {
-                const response = await fetch(`http://localhost:8000/api/salary/delete/${id}`, {
+                const url = process.env.REACT_APP_API_DELETE; // Use the environment variable for the API URL
+                const response = await fetch(`${url}/${id}`, {
                     method: 'DELETE',
                     headers:{
                         'Content-Type': 'application/json'
@@ -134,15 +138,15 @@ const SalaryTable = () => {
                 });
 
                 if(response.ok){
+                    const updatedData = data.filter((item, i) => i !== index);
+                    setData(updatedData);
                     Swal.fire(
                         'Deleted!',
                         'The salary has been deleted.',
                         'success'
-                    );
-
-                    const updatedData = data.filter((item, i) => i !== index);
-                    setData(updatedData);
-                    window.location.reload();
+                    ).then(() => {
+                        window.location.reload();
+                    });
                 }
                 else{
                     Swal.fire(
@@ -188,7 +192,8 @@ const SalaryTable = () => {
         if (formValues) {
             const { newsalary, newtip, newdate } = formValues;
             try {
-                const response = await fetch('http://localhost:8000/api/salary/add', {
+                const url = process.env.REACT_APP_API_ADD; // Use the environment variable for the API URL
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -204,8 +209,9 @@ const SalaryTable = () => {
                     const newSalaryData = await response.json();
                     // Add new data to the existing state
                     setData((prevData) => [...prevData, newSalaryData]);
-                    Swal.fire('Added!', 'The salary has been added.', 'success');
-                    window.location.reload();
+                    Swal.fire('Added!', 'The salary has been added.', 'success').then(() => {
+                        window.location.reload();
+                    });
                 } else {
                     Swal.fire('Error!', 'Failed to add the salary.', 'error');
                 }
@@ -225,7 +231,7 @@ const SalaryTable = () => {
                         <th>Tip</th>
                         <th>Total</th>
                         <th>
-                            <select onChange={handleFilter} value={selectedMonth}>
+                            <select onChange={handleFilter} value={selectedMonth} className='selection' id="monthSelector" >
                                 <option value="all">All</option>
                                 {Array.from({ length: 12 }, (_, index) => {
                                     const month = new Date(0, index).toLocaleString('en-US', { month: 'long' });
