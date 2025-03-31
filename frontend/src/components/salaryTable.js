@@ -10,7 +10,7 @@ const SalaryTable = () => {
             try{
                 // const url = process.env.REACT_APP_API_URL;
                 // const response = await fetch(url);
-                const response = await fetch(`https://my-salary-tracker-backend.onrender.com/api/salary`);
+                const response = await fetch(`https://my-salary-tracker.onrender.com/api/salary`);
                 const data = await response.json();
                 console.log('Fetched data: ', data);
                 setData(data);
@@ -73,7 +73,7 @@ const SalaryTable = () => {
             console.log('currently ID:', id);
             try {
                 // const url = process.env.REACT_APP_API_URL; // Use the environment variable for the API URL
-                const response = await fetch(`https://my-salary-tracker-backend.onrender.com/api/salary/edit${id}`, {
+                const response = await fetch(`https://my-salary-tracker.onrender.com/api/salary/edit${id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
@@ -131,7 +131,7 @@ const SalaryTable = () => {
             const id = currentIndex._id;
             try {
                 // const url = process.env.REACT_APP_API_DELETE; // Use the environment variable for the API URL
-                const response = await fetch(`https://my-salary-tracker-backend.onrender.com/api/salary/delete/${id}`, {
+                const response = await fetch(`https://my-salary-tracker.onrender.com/api/salary/delete/${id}`, {
                     method: 'DELETE',
                     headers:{
                         'Content-Type': 'application/json'
@@ -194,7 +194,7 @@ const SalaryTable = () => {
             const { newsalary, newtip, newdate } = formValues;
             try {
                 // const url = process.env.REACT_APP_API_ADD; // Use the environment variable for the API URL
-                const response = await fetch((`https://my-salary-tracker-backend.onrender.com/api/salary/add`), {
+                const response = await fetch((`https://my-salary-tracker.onrender.com/api/salary/add`), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
