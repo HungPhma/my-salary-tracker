@@ -63,13 +63,20 @@ const SalaryTable = () => {
             cancelButtonText: 'Cancel',
             confirmButtonText: 'Save',
             preConfirm: () => {
-                const newsalary = parseFloat(document.getElementById('salary').value);
-                const newtip = parseFloat(document.getElementById('tip').value);
                 const newdate = document.getElementById('date').value;
+                const salaryInput = document.getElementById('salary').value;
+                const tipInput = document.getElementById('tip').value;
 
-                if(isNaN(newsalary) || isNaN(newtip)){
-                    Swal.showValidationMessage('Please enter a valid number');
+                const newsalary = salaryInput === '' ? NaN : parseFloat(salaryInput);
+                const newtip = tipInput === '' ? NaN : parseFloat(tipInput);
+                console.log('new salary:', newsalary);
+                console.log('new tip:', newtip);
+                if (isNaN(newsalary) || isNaN(newtip)) {
+                    Swal.showValidationMessage('Please enter a valid number (0 is allowed)');
                     return false;
+                }
+                else{
+                    console.log('accepted 0');
                 }
                 return {newsalary, newtip, newdate};
             }
@@ -194,13 +201,21 @@ const SalaryTable = () => {
             cancelButtonText: 'Cancel',
             confirmButtonText: 'Add',
             preConfirm: () => {
-                const newsalary = parseFloat(document.getElementById('salary').value);
-                const newtip = parseFloat(document.getElementById('tip').value);
                 const newdate = document.getElementById('date').value;
-    
+                const salaryInput = document.getElementById('salary').value;
+                const tipInput = document.getElementById('tip').value;
+
+                const newsalary = salaryInput === '' ? NaN : parseFloat(salaryInput);
+                const newtip = tipInput === '' ? NaN : parseFloat(tipInput);
+                console.log('new salary:', newsalary);
+                console.log('new tip:', newtip);
+
                 if (isNaN(newsalary) || isNaN(newtip)) {
-                    Swal.showValidationMessage('Please enter a valid number');
+                    Swal.showValidationMessage('Please enter a valid number (0 is allowed)');
                     return false;
+                }
+                else{
+                    console.log('accepted 0');
                 }
                 return { newsalary, newtip, newdate };
             }
