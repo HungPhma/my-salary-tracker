@@ -40,35 +40,34 @@ const SalaryTable = () => {
     };
 
     const handEditSalary = async (index) => {
-        const currentIndex = data[index];
-
         const { value: formValues } = await Swal.fire({
-            title: 'Edit Salary and Tip',
-            html:
-                `<div class="form-group">
+            title: 'Add Salary and Tip',
+            html: `
+                <div class="form-group">
                     <label htmlFor="salary">Salary:</label>
-                    <input type="number" id="salary" value="${currentIndex.salary}" />
+                    <input type="number" id="salary" />
                 </div>
 
                 <div class="form-group">
                     <label htmlFor="tip">Tip:</label>
-                    <input type="number" id="tip" value="${currentIndex.tip}" />
+                    <input type="number" id="tip" />
                 </div>
 
                 <div class="form-group">
                     <label htmlFor="date">Date:</label>
-                    <input type="date" id="date" value="${currentIndex.date}" />
-                </div>`,
+                    <input type="date" id="date" />
+                </div>
+            `,
             showCancelButton: true,
             cancelButtonText: 'Cancel',
-            confirmButtonText: 'Save',
+            confirmButtonText: 'Add',
             preConfirm: () => {
                 const newdate = document.getElementById('date').value;
                 const salaryInput = document.getElementById('salary').value;
                 const tipInput = document.getElementById('tip').value;
 
-                const newsalary = salaryInput === '' ? NaN : parseFloat(salaryInput);
-                const newtip = tipInput === '' ? NaN : parseFloat(tipInput);
+                const newsalary = salaryInput.trim() === '' ? NaN : parseFloat(salaryInput);
+                const newtip = tipInput.trim() === '' ? NaN : parseFloat(tipInput);
             
                 console.log('new salary:', newsalary);
                 console.log('new tip:', newtip);
@@ -81,16 +80,7 @@ const SalaryTable = () => {
                 else{
                     console.log('accepted 0');
                 }
-                const updatedData = {};
-                if (newDate !== currentIndex.date) updatedData.date = newdate;
-                if (newSalary !== currentIndex.salary) updatedData.salary = newSalary;
-                if (newTip !== currentIndex.tip) updatedData.tip = newTip;
-
-                if (Object.keys(updatedData).length === 0) {
-                    Swal.showValidationMessage('No changes detected.');
-                    return false;
-                }
-                return updatedData;
+                return { newsalary, newtip, newdate };
             }
         });
 
