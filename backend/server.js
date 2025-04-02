@@ -114,83 +114,42 @@ app.post('/api/salary/add', async (req, res) => {
 });
 
 app.put('/api/salary/:id', async (req, res) => {
-    const {salary, tip, date} = req.body;
+    const { salary, tip, date } = req.body;
     console.log('Received data:', { salary, tip, date });
 
     const { id } = req.params;
     console.log('Received ID:', id);
+
     if (salary === undefined || tip === undefined || date === undefined) {
         return res.status(400).json({ message: 'Missing required fields' });
     }
 
     const salaryNumber = Number(salary);
     const tipNumber = Number(tip);
-    const updateDate = date;
-    console.log('Update date:', updateDate);
-    console.log('Salary number:', salaryNumber);
-    console.log('Tip number:', tipNumber);
 
     if (isNaN(salaryNumber) || isNaN(tipNumber)) {
         return res.status(400).json({ message: 'Salary and Tip must be valid numbers' });
     }
 
-    try{
+    try {
         const updatedSalary = await mongoose.connection.db.collection('salaryandtip').findOneAndUpdate(
             { _id: id },
-            { $set:{
-                date: updateDate,
-                salary: salaryNumber,
-                tip: tipNumber,
-                total: salaryNumber + tipNumber
-            }},{
-                returnDocument: 'after'
-            }
+            { $set: { date, salary: salaryNumber, tip: tipNumber, total: salaryNumber + tipNumber } },
+            { returnDocument: 'after' }
         );
-        console.log('Show updatedSalary:', updatedSalary);
+
+        if (!updatedSalary.value) {
+            console.log('No matching salary entry found.');
+            return res.status(404).json({ message: 'Salary entry not found' });
+        }
+        console.log('Show updateSalary:', updatedSalary);
         console.log('Updated salary data successfully:', updatedSalary.value);
-        return res.json(updatedSalary.value);
-    }
-    catch(error){
-        res.status(500).json({message: 'Error updating salary data', error: error});
+        return res.json(updatedSalary.value); // Ensure JSON response
+    } catch (error) {
+        console.error('Error updating salary:', error);
+        return res.status(500).json({ message: 'Error updating salary data', error: error.message });
     }
 });
-// app.put('/api/salary/:id', async (req, res) => {
-//     const { salary, tip, date } = req.body;
-//     console.log('Received data:', { salary, tip, date });
-
-//     const { id } = req.params;
-//     console.log('Received ID:', id);
-
-//     if (salary === undefined || tip === undefined || date === undefined) {
-//         return res.status(400).json({ message: 'Missing required fields' });
-//     }
-
-//     const salaryNumber = Number(salary);
-//     const tipNumber = Number(tip);
-
-//     if (isNaN(salaryNumber) || isNaN(tipNumber)) {
-//         return res.status(400).json({ message: 'Salary and Tip must be valid numbers' });
-//     }
-
-//     try {
-//         const updatedSalary = await mongoose.connection.db.collection('salaryandtip').findOneAndUpdate(
-//             { _id: id },
-//             { $set: { date, salary: salaryNumber, tip: tipNumber, total: salaryNumber + tipNumber } },
-//             { returnDocument: 'after' }
-//         );
-
-//         if (!updatedSalary.value) {
-//             console.log('No matching salary entry found.');
-//             return res.status(404).json({ message: 'Salary entry not found' });
-//         }
-
-//         console.log('Updated salary data successfully:', updatedSalary.value);
-//         return res.json(updatedSalary.value); // Ensure JSON response
-//     } catch (error) {
-//         console.error('Error updating salary:', error);
-//         return res.status(500).json({ message: 'Error updating salary data', error: error.message });
-//     }
-// });
 
 
 app.delete('/api/salary/delete/:id', async (req, res) => {
