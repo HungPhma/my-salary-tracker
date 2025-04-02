@@ -125,7 +125,7 @@ app.put('/api/salary/:id', async (req, res) => {
 
     const salaryNumber = Number(salary);
     const tipNumber = Number(tip);
-
+    const updateDate = date;
     if (isNaN(salaryNumber) || isNaN(tipNumber)) {
         return res.status(400).json({ message: 'Salary and Tip must be valid numbers' });
     }
@@ -134,7 +134,7 @@ app.put('/api/salary/:id', async (req, res) => {
         const updatedSalary = await mongoose.connection.db.collection('salaryandtip').findOneAndUpdate(
             { _id: id },
             { $set:{
-                date: date,
+                date: updateDate,
                 salary: salaryNumber,
                 tip: tipNumber,
                 total: salary + tip
