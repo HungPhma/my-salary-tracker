@@ -81,17 +81,24 @@ app.get('/api/income', async (req, res) => {
 app.post('/api/salary/add', async (req, res) => {
     const { salary, tip, date } = req.body;
 
-    if (!salary || !tip || !date) {
+    if (salary === undefined || tip === undefined || date === undefined) {
         return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    const salaryNumber = Number(salary);
+    const tipNumber = Number(tip);
+
+    if (isNaN(salaryNumber) || isNaN(tipNumber)) {
+        return res.status(400).json({ message: 'Salary and Tip must be valid numbers' });
     }
 
     try {
         const newSalary = {
             _id: uuidv4(),
             date,
-            salary,
-            tip,
-            total: salary + tip
+            salary: salaryNumber,
+            tip: tipNumber,
+            total: salaryNumber + tipNumber
         };
 
         const result = await mongoose.connection.db.collection('salaryandtip').insertOne(newSalary);
@@ -112,6 +119,13 @@ app.put('/api/salary/:id', async (req, res) => {
 
     const { id } = req.params;
     console.log('Received ID:', id);
+    if (salary === undefined || tip === undefined || date === undefined) {
+        return res.status(400).json({ message: 'Missing required fields' });
+    }
+
+    if (isNaN(salary) || isNaN(tip)) {
+        return res.status(400).json({ message: 'Salary and Tip must be valid numbers' });
+    }
 
     try{
         const updatedSalary = await mongoose.connection.db.collection('salaryandtip').findOneAndUpdate(
