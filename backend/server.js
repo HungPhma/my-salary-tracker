@@ -30,6 +30,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Welcome to salary_tracker API');
 });
+
 dotenv.config(); 
 const url = process.env.MONGO_URI;
  
@@ -46,7 +47,8 @@ app.get('/api/salary', async (req, res) => {
     try {
         const collection = mongoose.connection.db.collection('salaryandtip');
         const salaries = await collection.find().sort({ date: 1 }).toArray(); // Sort by date in ascending order
-        console.log('Salary data: ', salaries); // Log the data for debugging
+
+        console.log('Fetched salary data successfully');
         res.json(salaries); // Return the data as JSON
     } catch (err) {
         res.status(500).json({ message: 'Error fetching salary data', error: err });
@@ -55,21 +57,18 @@ app.get('/api/salary', async (req, res) => {
 
 app.get('/api/income', async (req, res) => {
     try {
-        console.log('Fetching income data...');
         const collection = mongoose.connection.db.collection('salaryandtip');
-        console.log('Collection name:', collection.collectionName); // Log the collection name for debugging
 
         const result = await collection.aggregate([
             { $group: { _id: null, totalIncome: {$sum: "$total"}}}
         ]).toArray();
 
-        console.log('Aggregation result:', result); // Log the aggregation result for debugging
         if (result.length > 0){
-            console.log("Total income:", result[0].totalIncome);
+            console.log('Fetched income data successfully');
             res.json({ totalIncome: result[0].totalIncome });
         }
         else{
-            console.log("No income data found")
+            console.log('No income data found');
             res.json({ totalIncome: 0}); // If no data, return 0
         }
     }
@@ -107,23 +106,27 @@ app.post('/api/salary/add', async (req, res) => {
             _id: newSalary._id, 
             ...newSalary
         });
+        console.log('Added new salary data successfully');
     } catch (error) {
-        console.error('Error adding salary:', error);
+        // console.error('Error adding salary:', error);
         res.status(500).json({ message: 'Error adding salary data' });
     }
 });
 
 app.put('/api/salary/:id', async (req, res) => {
     const {salary, tip, date} = req.body;
-    console.log('Received data:', { salary, tip, date });
+    // console.log('Received data:', { salary, tip, date });
 
     const { id } = req.params;
-    console.log('Received ID:', id);
+    // console.log('Received ID:', id);
     if (salary === undefined || tip === undefined || date === undefined) {
         return res.status(400).json({ message: 'Missing required fields' });
     }
 
-    if (isNaN(salary) || isNaN(tip)) {
+    const salaryNumber = Number(salary);
+    const tipNumber = Number(tip);
+
+    if (isNaN(salaryNumber) || isNaN(tipNumber)) {
         return res.status(400).json({ message: 'Salary and Tip must be valid numbers' });
     }
 
@@ -132,14 +135,14 @@ app.put('/api/salary/:id', async (req, res) => {
             { _id: id },
             { $set:{
                 date: date,
-                salary: salary,
-                tip: tip,
+                salary: salaryNumber,
+                tip: tipNumber,
                 total: salary + tip
             }},{
                 returnDocument: 'after'
             }
         );
-        console.log('Updated salary data: ', updatedSalary);
+        console.log('Updated salary data successfully');
         res.json(updatedSalary);
     }
     catch(error){
@@ -149,12 +152,10 @@ app.put('/api/salary/:id', async (req, res) => {
 
 app.delete('/api/salary/delete/:id', async (req, res) => {
     const { id } = req.params;
-    console.log('Received ID for deletion:', id);
-
     try {
         const result = await mongoose.connection.db.collection('salaryandtip').deleteOne({ _id: id });
 
-        console.log('Deletion result: ', result);
+        console.log('Delete data successfully');
         res.json(result);
     } catch (error) {
         // Catch the error here and use the correct variable name
