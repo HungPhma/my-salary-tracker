@@ -173,7 +173,7 @@ app.put('/api/salary/:id', async (req, res) => {
 
     try {
         const updatedSalary = await mongoose.connection.db.collection('salaryandtip').findOneAndUpdate(
-            { _id: new mongoose.Types.ObjectId(id) }, // Ensure correct ObjectId format
+            { _id: id },
             { $set: { date, salary: salaryNumber, tip: tipNumber, total: salaryNumber + tipNumber } },
             { returnDocument: 'after' }
         );
