@@ -141,7 +141,7 @@ app.put('/api/salary/:id', async (req, res) => {
                 date: updateDate,
                 salary: salaryNumber,
                 tip: tipNumber,
-                total: salary + tip
+                total: salaryNumber + tipNumber
             }},{
                 returnDocument: 'after'
             }

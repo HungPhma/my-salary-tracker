@@ -40,6 +40,12 @@ const SalaryTable = () => {
     };
 
     const handEditSalary = async (index) => {
+        const currentIndex = data[index]; // Ensure index is valid
+        if (!currentIndex) {
+            Swal.fire('Error', 'Invalid data index', 'error');
+            return;
+        }
+
         const { value: formValues } = await Swal.fire({
             title: 'Add Salary and Tip',
             html: `
@@ -80,12 +86,13 @@ const SalaryTable = () => {
                 else{
                     console.log('accepted 0');
                 }
-                return { newsalary, newtip, newdate };
+                return { salary: newsalary, tip: newtip, date: newdate };
+
             }
         });
 
         if(formValues){
-            const {newsalary, newtip, newdate} = formValues;  
+            const { salary, tip, date } = formValues;
             const id = currentIndex._id;
             console.log('currently ID:', id);
             try {
@@ -95,13 +102,10 @@ const SalaryTable = () => {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        date: newdate,
-                        salary: newsalary,
-                        tip: newtip
-                    })
+                    body: JSON.stringify({ salary, tip, date })
                 });
 
+                
                 console.log('Response status:', response.status);
                 console.log('Response body:', response);
 
