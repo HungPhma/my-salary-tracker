@@ -126,6 +126,10 @@ app.put('/api/salary/:id', async (req, res) => {
     const salaryNumber = Number(salary);
     const tipNumber = Number(tip);
     const updateDate = date;
+    console.log('Update date:', updateDate);
+    console.log('Salary number:', salaryNumber);
+    console.log('Tip number:', tipNumber);
+    
     if (isNaN(salaryNumber) || isNaN(tipNumber)) {
         return res.status(400).json({ message: 'Salary and Tip must be valid numbers' });
     }
