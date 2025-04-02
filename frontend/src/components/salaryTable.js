@@ -205,11 +205,13 @@ const SalaryTable = () => {
                 const salaryInput = document.getElementById('salary').value;
                 const tipInput = document.getElementById('tip').value;
 
-                const newsalary = salaryInput === '' ? NaN : parseFloat(salaryInput);
-                const newtip = tipInput === '' ? NaN : parseFloat(tipInput);
+                const newsalary = salaryInput.trim() === '' ? NaN : parseFloat(salaryInput);
+                const newtip = tipInput.trim() === '' ? NaN : parseFloat(tipInput);
+            
                 console.log('new salary:', newsalary);
                 console.log('new tip:', newtip);
-
+                console.log('new date:', newdate);
+                
                 if (isNaN(newsalary) || isNaN(newtip)) {
                     Swal.showValidationMessage('Please enter a valid number (0 is allowed)');
                     return false;
@@ -236,9 +238,12 @@ const SalaryTable = () => {
                         tip: newtip
                     })
                 });
-    
+                console.log('Response status:', response.status);
+                console.log('Response body:', response);
+                
                 if (response.ok) {
                     const newSalaryData = await response.json();
+                    console.log('Server response data:', newSalaryData);
                     // Add new data to the existing state
                     setData((prevData) => [...prevData, newSalaryData]);
                     Swal.fire('Added!', 'The salary has been added.', 'success').then(() => {
