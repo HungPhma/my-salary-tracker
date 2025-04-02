@@ -81,9 +81,8 @@ const SalaryTable = () => {
                 else{
                     console.log('accepted 0');
                 }
-
                 const updatedData = {};
-                if (newDate !== currentIndex.date) updatedData.date = newDate;
+                if (newDate !== currentIndex.date) updatedData.date = newdate;
                 if (newSalary !== currentIndex.salary) updatedData.salary = newSalary;
                 if (newTip !== currentIndex.tip) updatedData.tip = newTip;
 
@@ -101,7 +100,7 @@ const SalaryTable = () => {
             console.log('currently ID:', id);
             try {
                 // const url = process.env.REACT_APP_API_URL; // Use the environment variable for the API URL
-                const response = await fetch(`https://my-salary-tracker.onrender.com/api/salary/edit${id}`, {
+                const response = await fetch(`https://my-salary-tracker.onrender.com/api/salary/${id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json'
