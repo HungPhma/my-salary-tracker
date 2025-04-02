@@ -115,10 +115,10 @@ app.post('/api/salary/add', async (req, res) => {
 
 app.put('/api/salary/:id', async (req, res) => {
     const {salary, tip, date} = req.body;
-    // console.log('Received data:', { salary, tip, date });
+    console.log('Received data:', { salary, tip, date });
 
     const { id } = req.params;
-    // console.log('Received ID:', id);
+    console.log('Received ID:', id);
     if (salary === undefined || tip === undefined || date === undefined) {
         return res.status(400).json({ message: 'Missing required fields' });
     }
@@ -129,7 +129,7 @@ app.put('/api/salary/:id', async (req, res) => {
     console.log('Update date:', updateDate);
     console.log('Salary number:', salaryNumber);
     console.log('Tip number:', tipNumber);
-    
+
     if (isNaN(salaryNumber) || isNaN(tipNumber)) {
         return res.status(400).json({ message: 'Salary and Tip must be valid numbers' });
     }

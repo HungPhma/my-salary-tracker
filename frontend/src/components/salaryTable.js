@@ -67,8 +67,8 @@ const SalaryTable = () => {
                 const salaryInput = document.getElementById('salary').value;
                 const tipInput = document.getElementById('tip').value;
 
-                const newsalary = salaryInput.trim() === '' ? NaN : parseFloat(salaryInput);
-                const newtip = tipInput.trim() === '' ? NaN : parseFloat(tipInput);
+                const newsalary = salaryInput === '' ? NaN : parseFloat(salaryInput);
+                const newtip = tipInput === '' ? NaN : parseFloat(tipInput);
             
                 console.log('new salary:', newsalary);
                 console.log('new tip:', newtip);
@@ -81,7 +81,17 @@ const SalaryTable = () => {
                 else{
                     console.log('accepted 0');
                 }
-                return {newsalary, newtip, newdate};
+
+                const updatedData = {};
+                if (newDate !== currentIndex.date) updatedData.date = newDate;
+                if (newSalary !== currentIndex.salary) updatedData.salary = newSalary;
+                if (newTip !== currentIndex.tip) updatedData.tip = newTip;
+
+                if (Object.keys(updatedData).length === 0) {
+                    Swal.showValidationMessage('No changes detected.');
+                    return false;
+                }
+                return updatedData;
             }
         });
 
