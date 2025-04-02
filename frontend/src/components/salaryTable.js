@@ -67,10 +67,13 @@ const SalaryTable = () => {
                 const salaryInput = document.getElementById('salary').value;
                 const tipInput = document.getElementById('tip').value;
 
-                const newsalary = salaryInput === '' ? NaN : parseFloat(salaryInput);
-                const newtip = tipInput === '' ? NaN : parseFloat(tipInput);
+                const newsalary = salaryInput.trim() === '' ? NaN : parseFloat(salaryInput);
+                const newtip = tipInput.trim() === '' ? NaN : parseFloat(tipInput);
+            
                 console.log('new salary:', newsalary);
                 console.log('new tip:', newtip);
+                console.log('new date:', newdate);
+                
                 if (isNaN(newsalary) || isNaN(newtip)) {
                     Swal.showValidationMessage('Please enter a valid number (0 is allowed)');
                     return false;
