@@ -147,7 +147,7 @@ app.put('/api/salary/:id', async (req, res) => {
             }
         );
         console.log('Updated salary data successfully');
-        res.json(updatedSalary);
+        res.json(updatedSalary.value);
     }
     catch(error){
         res.status(500).json({message: 'Error updating salary data', error: error});
