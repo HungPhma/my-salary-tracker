@@ -138,12 +138,12 @@ app.put('/api/salary/:id', async (req, res) => {
             { returnDocument: 'after' }
         );
 
+        console.log('Show updateSalary:', updatedSalary);
+        console.log('Updated salary data successfully:', updatedSalary.value);
         if (!updatedSalary.value) {
             console.log('No matching salary entry found.');
             return res.status(404).json({ message: 'Salary entry not found' });
         }
-        console.log('Show updateSalary:', updatedSalary);
-        console.log('Updated salary data successfully:', updatedSalary.value);
         return res.json(updatedSalary.value); // Ensure JSON response
     } catch (error) {
         console.error('Error updating salary:', error);
