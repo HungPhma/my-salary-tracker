@@ -45,58 +45,49 @@ const SalaryTable = () => {
             Swal.fire('Error', 'Invalid data index', 'error');
             return;
         }
-
+    
         const { value: formValues } = await Swal.fire({
-            title: 'Add Salary and Tip',
+            title: 'Edit Salary and Tip',
             html: `
                 <div class="form-group">
-                    <label htmlFor="salary">Salary:</label>
-                    <input type="number" id="salary" />
+                    <label for="salary">Salary:</label>
+                    <input type="number" id="salary" value="${currentIndex.salary}" />
                 </div>
-
                 <div class="form-group">
-                    <label htmlFor="tip">Tip:</label>
-                    <input type="number" id="tip" />
+                    <label for="tip">Tip:</label>
+                    <input type="number" id="tip" value="${currentIndex.tip}" />
                 </div>
-
                 <div class="form-group">
-                    <label htmlFor="date">Date:</label>
-                    <input type="date" id="date" />
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" value="${currentIndex.date}" />
                 </div>
             `,
             showCancelButton: true,
             cancelButtonText: 'Cancel',
-            confirmButtonText: 'Add',
+            confirmButtonText: 'Update',
             preConfirm: () => {
                 const newdate = document.getElementById('date').value;
                 const salaryInput = document.getElementById('salary').value;
                 const tipInput = document.getElementById('tip').value;
-
-                const newsalary = salaryInput.trim() === '' ? NaN : parseFloat(salaryInput);
-                const newtip = tipInput.trim() === '' ? NaN : parseFloat(tipInput);
-            
-                console.log('new salary:', newsalary);
-                console.log('new tip:', newtip);
-                console.log('new date:', newdate);
-                
+    
+                const newsalary = salaryInput.trim() === '' ? 0 : parseFloat(salaryInput);
+                const newtip = tipInput.trim() === '' ? 0 : parseFloat(tipInput);
+    
                 if (isNaN(newsalary) || isNaN(newtip)) {
                     Swal.showValidationMessage('Please enter a valid number (0 is allowed)');
                     return false;
                 }
-                else{
-                    console.log('accepted 0');
-                }
+    
                 return { salary: newsalary, tip: newtip, date: newdate };
-
             }
         });
-
-        if(formValues){
+    
+        if (formValues) {
             const { salary, tip, date } = formValues;
             const id = currentIndex._id;
-            console.log('currently ID:', id);
+            console.log('Updating salary entry with ID:', id);
+    
             try {
-                // const url = process.env.REACT_APP_API_URL; // Use the environment variable for the API URL
                 const response = await fetch(`https://my-salary-tracker.onrender.com/api/salary/${id}`, {
                     method: 'PUT',
                     headers: {
@@ -104,40 +95,29 @@ const SalaryTable = () => {
                     },
                     body: JSON.stringify({ salary, tip, date })
                 });
-
-                
+    
                 console.log('Response status:', response.status);
-                console.log('Response body:', response);
-
-                if(response.ok){
+    
+                if (response.ok) {
                     const updatedSalary = await response.json();
                     const newData = [...data];
                     newData[index] = updatedSalary;
                     newData.sort((a, b) => new Date(a.date) - new Date(b.date));
-
+    
                     setData(newData);
-                    Swal.fire(
-                        'Updated!',
-                        'The salary has been updated.',
-                        'success'
-                    ).then(() => {
+                    Swal.fire('Updated!', 'The salary has been updated.', 'success').then(() => {
                         window.location.reload();
                     });
+                } else {
+                    const errorMsg = await response.json();
+                    Swal.fire('Error!', errorMsg.message || 'Failed to update the database.', 'error');
                 }
-                else{
-                    Swal.fire(
-                        'Error!',
-                        'Failed to update the database.',
-                        'error'
-                    );
-                }
-            }
-            catch (error) {
+            } catch (error) {
                 console.error('Error updating:', error);
                 Swal.fire('Error', 'Failed to connect to server.', 'error');
             }
         }
-    };
+    };    
     const handDeleteSalary = async (index) => {
         const currentIndex = data[index];
         const {value: confirmDelete} = await Swal.fire({
