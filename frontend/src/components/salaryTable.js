@@ -40,7 +40,7 @@ const SalaryTable = () => {
     };
 
     const handEditSalary = async (index) => {
-        const currentIndex = data[index]; // Ensure index is valid
+        const currentIndex = data[index];
         if (!currentIndex) {
             Swal.fire('Error', 'Invalid data index', 'error');
             return;
@@ -84,40 +84,48 @@ const SalaryTable = () => {
     
         if (formValues) {
             const { salary, tip, date } = formValues;
+            console.log('Type of _id:',typeof currentIndex._id);
             const id = currentIndex._id;
             console.log('Updating salary entry with ID:', id);
     
             try {
                 const response = await fetch(`https://my-salary-tracker.onrender.com/api/salary/${id}`, {
                     method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ salary, tip, date })
                 });
     
                 console.log('Response status:', response.status);
     
-                if (response.ok) {
-                    const updatedSalary = await response.json();
-                    const newData = [...data];
-                    newData[index] = updatedSalary;
-                    newData.sort((a, b) => new Date(a.date) - new Date(b.date));
-    
-                    setData(newData);
+                // If no content is returned, skip JSON parsing
+                if (response.status === 204) {
                     Swal.fire('Updated!', 'The salary has been updated.', 'success').then(() => {
                         window.location.reload();
                     });
-                } else {
-                    const errorMsg = await response.json();
-                    Swal.fire('Error!', errorMsg.message || 'Failed to update the database.', 'error');
+                    return;
                 }
+    
+                const responseBody = await response.text();
+                console.log('Raw response body:', responseBody);
+    
+                const updatedSalary = responseBody ? JSON.parse(responseBody) : null;
+                if (!updatedSalary) throw new Error('Invalid response from server');
+    
+                const newData = [...data];
+                newData[index] = updatedSalary;
+                newData.sort((a, b) => new Date(a.date) - new Date(b.date));
+    
+                setData(newData);
+                Swal.fire('Updated!', 'The salary has been updated.', 'success').then(() => {
+                    window.location.reload();
+                });
             } catch (error) {
                 console.error('Error updating:', error);
-                Swal.fire('Error', 'Failed to connect to server.', 'error');
+                Swal.fire('Error', error.message, 'error');
             }
         }
-    };    
+    };
+    
     const handDeleteSalary = async (index) => {
         const currentIndex = data[index];
         const {value: confirmDelete} = await Swal.fire({
@@ -244,6 +252,9 @@ const SalaryTable = () => {
             }
         }
     };
+    const totalSalary = filteredData.reduce((sum, item) => sum + (parseFloat(item.salary) || 0), 0);
+    const totalTip = filteredData.reduce((sum, item) => sum + (parseFloat(item.tip) || 0), 0);
+    const totalTotal = filteredData.reduce((sum, item) => sum + (parseFloat(item.total) || 0), 0);
     return (
         <div className='salaryTable'>
             <table className='table'>
@@ -285,6 +296,15 @@ const SalaryTable = () => {
                         </tr>
                     ))}
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td><strong>Total</strong></td>
+                        <td><strong>${totalSalary.toFixed(2)}</strong></td>
+                        <td><strong>${totalTip.toFixed(2)}</strong></td>
+                        <td><strong>${totalTotal.toFixed(2)}</strong></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
             </table>
             <div className='add-salary'>
                 <button className='add-button' onClick={handAddSalary}>Add</button>
